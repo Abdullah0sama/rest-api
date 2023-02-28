@@ -5,6 +5,7 @@ import { KyselyModule } from 'src/database/kysely.module';
 import { PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import { UserRepository } from './user.repository';
+import { GeoLocationModule } from 'src/geolocation/geolocationModule';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserRepository } from './user.repository';
         }),
       }),
     }),
+    GeoLocationModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],

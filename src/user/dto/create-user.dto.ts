@@ -11,11 +11,11 @@ export class CreateUserDto {
   @IsEmail()
   readonly email: string;
 
-  @ApiProperty({ example: 37.0902 })
+  @ApiProperty({ example: 37.773972 })
   @IsNumber()
   readonly latitude: number;
 
-  @ApiProperty({ example: 95.7129 })
+  @ApiProperty({ example: -122.431297 })
   @IsNumber()
   readonly longitude: number;
 }
