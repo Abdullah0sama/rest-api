@@ -4,14 +4,28 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
+const user_example = {
+  name: 'john',
+  email: 'john@gmail.com',
+  state: 'New York',
+  city: 'New York',
+};
+
 describe('UserController', () => {
   let userController: UserController;
   let userService: UserService;
-
   beforeEach(async () => {
     const userModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [UserService],
+      providers: [
+        {
+          provide: UserService,
+          useValue: {
+            get: jest.fn().mockReturnValue(user_example),
+            create: jest.fn().mockReturnValue(user_example),
+          },
+        },
+      ],
     }).compile();
 
     userController = userModule.get<UserController>(UserController);
@@ -28,7 +42,9 @@ describe('UserController', () => {
         state: 'Massachusetts',
         email: 'john@gmail.com',
       };
-      jest.spyOn(userService, 'get').mockImplementation(() => userData);
+      jest
+        .spyOn(userService, 'get')
+        .mockImplementation(() => Promise.resolve(userData));
       const returnedUser = await userController.find(user_id);
       expect(returnedUser).toBe(userData);
       expect(userService.get).toBeCalledWith(user_id);
@@ -44,10 +60,20 @@ describe('UserController', () => {
         latitude: 124214,
       };
 
-      jest.spyOn(userService, 'create').mockImplementation(() => userData);
+      const userSavedInfo: User = {
+        id: 12,
+        name: 'John',
+        email: 'john@gmail.com',
+        state: 'New York',
+        city: 'New York',
+      };
+
+      jest
+        .spyOn(userService, 'create')
+        .mockImplementation(() => Promise.resolve(userSavedInfo));
 
       const returnedUser = await userController.create(userData);
-      expect(returnedUser).toBe(userData);
+      expect(returnedUser).toBe(userSavedInfo);
     });
   });
 });

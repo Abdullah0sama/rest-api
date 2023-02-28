@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { Kysely, NoResultError } from 'kysely';
-import { KYSELY_CONNECTION } from 'src/database/interface/connection';
-import { Database } from 'src/database/interface/database';
+import { KYSELY_CONNECTION } from '../database/interface/connection';
+import { Database } from '../database/interface/database';
 import { User } from './user.entity';
 import { DatabaseError } from 'pg';
 export class UserRepository {
