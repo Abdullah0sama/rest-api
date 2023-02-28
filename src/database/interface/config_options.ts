@@ -1,0 +1,1 @@
+export const KYSELY_CONFIG = 'KYSELY_CONFIG';
