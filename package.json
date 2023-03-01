@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate:latest": "node dist/database/migrateToLatest.js"
+    "migrate:latest": "node dist/database/migrateToLatest.js",
+    "seed": "node dist/database/seeder.js"
   },
   "dependencies": {
     "@golevelup/ts-jest": "^0.3.5",
