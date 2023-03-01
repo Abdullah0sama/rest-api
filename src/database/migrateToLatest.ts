@@ -8,18 +8,14 @@ import {
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import { Pool } from 'pg';
+import { DatabaseConfig } from 'src/config/databaseConfig';
 
 export async function migrateToLatest() {
   console.log('Migration is about to be applied!');
 
   const db = new Kysely({
     dialect: new PostgresDialect({
-      pool: new Pool({
-        host: 'localhost',
-        database: 'funapp',
-        password: 'postgres',
-        user: 'postgres',
-      }),
+      pool: new Pool(DatabaseConfig),
     }),
   });
   const migrator = new Migrator({
