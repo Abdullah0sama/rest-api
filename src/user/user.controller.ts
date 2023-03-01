@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -10,12 +11,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from './user.entity';
+import { JWTAuthGaurd } from '../auth/gaurds/jwt-auth.gaurd';
 
+@ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(JWTAuthGaurd)
   @Get(':user_id')
   @ApiOperation({ description: 'Find user by id' })
   @ApiOkResponse({ type: User })
