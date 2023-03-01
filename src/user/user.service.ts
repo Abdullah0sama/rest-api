@@ -34,8 +34,8 @@ export class UserService {
     const { latitude, longitude, ...userData } = createUserDto;
 
     const location = await this.geoLocationService.reverseGeocoding(
-      latitude,
       longitude,
+      latitude,
     );
 
     userData.password = await hashPayload(userData.password);
