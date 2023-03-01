@@ -1,4 +1,3 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { GeoLocationAddress } from '../interface/geolocation.interface';
 
 /**
@@ -16,15 +15,15 @@ export async function nominatimAPI(
     lon: longitude.toString(),
     format: 'jsonv2',
   });
+  console.log('here', longitude, latitude);
   const res = await fetch(
     'https://nominatim.openstreetmap.org/reverse?' + searchParams,
     {
       headers: {
-        Referer: 'stop.com',
+        Referer: 'here.com',
       },
     },
   );
-
   const geolocation = await res.json();
   if (geolocation && geolocation?.address) {
     const { country_code, country, state, city } = geolocation.address;
@@ -35,6 +34,6 @@ export async function nominatimAPI(
       state,
     };
   } else {
-    throw new InternalServerErrorException();
+    throw new Error('Not expected response from nominatim API');
   }
 }
