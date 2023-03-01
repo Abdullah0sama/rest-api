@@ -4,9 +4,11 @@ import { KyselyModule } from './database/kysely.module';
 import { PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import { DatabaseConfig } from './config/databaseConfig';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     UserModule,
     KyselyModule.forRoot({
       dialect: new PostgresDialect({

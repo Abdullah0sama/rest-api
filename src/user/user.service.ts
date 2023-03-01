@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import { GeoLocationService } from '../geolocation/geolocationService';
 import { CountryCodes } from '../geolocation/interface/location_codes';
+import { hashPayload } from '../auth/utils';
 
 @Injectable()
 export class UserService {
@@ -30,10 +31,14 @@ export class UserService {
    * @return created user entity
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const { latitude, longitude, ...userData } = createUserDto;
+
     const location = await this.geoLocationService.reverseGeocoding(
-      createUserDto.longitude,
-      createUserDto.latitude,
+      latitude,
+      longitude,
     );
+
+    userData.password = await hashPayload(userData.password);
 
     if (!UserService.whiteListedCountryCodes.includes(location.countryCode)) {
       throw new BadRequestException('User should be located in the USA');
@@ -42,9 +47,12 @@ export class UserService {
     const userInfo = {
       state: location.state,
       city: location.city,
-      name: createUserDto.name,
-      email: createUserDto.email,
+      ...userData,
     };
     return this.userRepository.create(userInfo);
+  }
+
+  async getByEmail(email: string, returnPassword = false): Promise<User> {
+    return this.userRepository.getByEmail(email, returnPassword);
   }
 }

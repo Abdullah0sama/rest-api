@@ -4,11 +4,12 @@ import { UserRepository } from './user.repository';
 import { GeoLocationService } from '../geolocation/geolocationService';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BadRequestException } from '@nestjs/common';
+import { DeepMocked } from '@golevelup/ts-jest';
 
 describe('UserService', () => {
   let userService: UserService;
   let geoLocationService: GeoLocationService;
-  let userRepository: UserRepository;
+  let userRepository: DeepMocked<UserRepository>;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -34,7 +35,7 @@ describe('UserService', () => {
 
     userService = module.get<UserService>(UserService);
     geoLocationService = module.get<GeoLocationService>(GeoLocationService);
-    userRepository = module.get<UserRepository>(UserRepository);
+    userRepository = module.get<DeepMocked<UserRepository>>(UserRepository);
   });
 
   describe('get', () => {
@@ -58,6 +59,7 @@ describe('UserService', () => {
       latitude: 121,
       longitude: 3131,
       name: 'John',
+      password: '12345678',
     };
     it('should create user', async () => {
       const locationAddress = {
@@ -78,6 +80,11 @@ describe('UserService', () => {
           email: user_create_data.email,
           name: user_create_data.name,
         },
+      );
+
+      // Ensure that the password is not passed as plain text
+      expect(userRepository.create.mock.calls[0][0].password).not.toEqual(
+        user_create_data.password,
       );
     });
     it('should not create a user if not from the USA', async () => {

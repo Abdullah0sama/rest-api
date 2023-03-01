@@ -41,6 +41,7 @@ describe('UserController', () => {
         city: 'Boston',
         state: 'Massachusetts',
         email: 'john@gmail.com',
+        password: '12345678',
       };
       jest
         .spyOn(userService, 'get')
@@ -58,6 +59,7 @@ describe('UserController', () => {
         email: 'john@gmail.com',
         longitude: 13123,
         latitude: 124214,
+        password: '12345678',
       };
 
       const userSavedInfo: User = {

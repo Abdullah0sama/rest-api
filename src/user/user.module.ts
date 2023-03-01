@@ -8,5 +8,6 @@ import { GeoLocationModule } from 'src/geolocation/geolocationModule';
   imports: [GeoLocationModule],
   controllers: [UserController],
   providers: [UserService, UserRepository],
+  exports: [UserService],
 })
 export class UserModule {}

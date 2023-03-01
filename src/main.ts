@@ -13,6 +13,7 @@ async function bootstrap() {
     .setDescription('FunApp API description')
     .setVersion('1.0')
     .addTag('funapp')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
