@@ -39,5 +39,23 @@ describe('AuthService', () => {
         new UnauthorizedException('Wrong email or password'),
       );
     });
+
+    it('Should throw if user does not have correct password', async () => {
+      const email = 'something@gmail.com';
+      const password = '12345678';
+      const userData = {
+        password: 'not correct',
+        id: 123,
+        email: 'email@gmail.com',
+        state: 'New York',
+        city: 'New York',
+        name: 'Name',
+      };
+      userServiceMock.getByEmail.mockResolvedValue(userData);
+
+      await expect(authSerivce.validate(email, password)).rejects.toThrowError(
+        new UnauthorizedException('Wrong email or password'),
+      );
+    });
   });
 });
